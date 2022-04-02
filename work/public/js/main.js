@@ -3,8 +3,37 @@
 {
   const token = document.querySelector('main').dataset.token;
   const input = document.querySelector('[name="title"]');
+  const ul = document.querySelector('ul');
 
   input.focus();
+
+  ul.addEventListener('click', e => {
+    if (e.target.type === 'checkbox') {
+      fetch('?action=toggle', {
+        method: 'POST',
+        body: new URLSearchParams({
+          id: e.target.parentNode.dataset.id,
+          token: token,
+        }),
+      });
+    }
+
+    if (e.target.classList.contains('delete')) {
+      if (!confirm('Are you sure?')) {
+        return;
+      }
+
+      fetch('?action=delete', {
+        method: 'POST',
+        body: new URLSearchParams({
+          id: e.target.parentNode.dataset.id,
+          token: token,
+        }),
+      });
+
+      e.target.parentNode.remove();
+    }
+  });
 
   function addTodo(id, titleValue) {
     const li = document.createElement('li');
@@ -21,7 +50,6 @@
     li.appendChild(title);
     li.appendChild(deleteSpan);
 
-    const ul = document.querySelector('ul');
     // ulの最初の子要素にする
     ul.insertBefore(li, ul.firstChild);
   }
@@ -45,40 +73,6 @@
 
     input.value = '';
     input.focus();
-  });
-
-  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-  checkboxes.forEach(checkbox => {
-    checkbox.addEventListener('change', () => {
-      fetch('?action=toggle', {
-        method: 'POST',
-        body: new URLSearchParams({
-          id: checkbox.parentNode.dataset.id,
-          token: token,
-        }),
-      });
-      // CSSで対応
-      // checkbox.nextElementSibling.classList.toggle('done');
-    });
-  });
-
-  const deletes = document.querySelectorAll('.delete');
-  deletes.forEach(span => {
-    span.addEventListener('click', () => {
-      if (!confirm('Are you sure?')) {
-        return;
-      }
-
-      fetch('?action=delete', {
-        method: 'POST',
-        body: new URLSearchParams({
-          id: span.parentNode.dataset.id,
-          token: token,
-        }),
-      });
-
-      span.parentNode.remove();
-    });
   });
 
   const purge = document.querySelector('.purge');
