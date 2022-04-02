@@ -2,6 +2,50 @@
 
 {
   const token = document.querySelector('main').dataset.token;
+  const input = document.querySelector('[name="title"]');
+
+  input.focus();
+
+  function addTodo(id, titleValue) {
+    const li = document.createElement('li');
+    li.dataset.id = id;
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    const title = document.createElement('span');
+    title.textContent = titleValue;
+    const deleteSpan = document.createElement('span');
+    deleteSpan.textContent = 'x';
+    deleteSpan.classList.add('delete');
+
+    li.appendChild(checkbox);
+    li.appendChild(title);
+    li.appendChild(deleteSpan);
+
+    const ul = document.querySelector('ul');
+    // ulの最初の子要素にする
+    ul.insertBefore(li, ul.firstChild);
+  }
+
+  document.querySelector('form').addEventListener('submit', e => {
+    e.preventDefault();
+
+    const title = input.value;
+
+    fetch('?action=add', {
+      method: 'POST',
+      body: new URLSearchParams({
+        title: title,
+        token: token,
+      }),
+    })
+    .then(response => response.json())
+    .then(json => {
+      addTodo(json.id, title);
+    });
+
+    input.value = '';
+    input.focus();
+  });
 
   const checkboxes = document.querySelectorAll('input[type="checkbox"]');
   checkboxes.forEach(checkbox => {
