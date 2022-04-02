@@ -54,6 +54,18 @@ function toggleTodo($pdo)
     $stmt->execute();
 }
 
+function deleteTodo($pdo)
+{
+    $id = filter_input(INPUT_POST, 'id');
+    if (empty($id)) {
+        return;
+    }
+
+    $stmt = $pdo->prepare("DELETE FROM todos WHERE id = :id");
+    $stmt->bindValue('id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+}
+
 function addTodo($pdo)
 {
     $title = trim(filter_input(INPUT_POST, 'title'));
