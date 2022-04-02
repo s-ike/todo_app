@@ -11,8 +11,8 @@
           token: checkbox.dataset.token,
         }),
       });
-
-      checkbox.nextElementSibling.classList.toggle('done');
+      // CSSで対応
+      // checkbox.nextElementSibling.classList.toggle('done');
     });
   });
 
