@@ -42,6 +42,18 @@ function getPdoInstance()
     }
 }
 
+function toggleTodo($pdo)
+{
+    $id = filter_input(INPUT_POST, 'id');
+    if (empty($id)) {
+        return;
+    }
+
+    $stmt = $pdo->prepare("UPDATE todos SET is_done = NOT is_done WHERE id = :id");
+    $stmt->bindValue('id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+}
+
 function addTodo($pdo)
 {
     $title = trim(filter_input(INPUT_POST, 'title'));
@@ -59,12 +71,4 @@ function getTodos($pdo)
     $stmt = $pdo->query("SELECT * FROM todos ORDER BY id DESC");
     $todos = $stmt->fetchAll();
     return $todos;
-}
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    validateToken();
-    addTodo($pdo);
-
-    header('Location: ' . SITE_URL);
-    exit;
 }
