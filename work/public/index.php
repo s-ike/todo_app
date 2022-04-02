@@ -22,14 +22,10 @@ $todos = $todo->getAll();
 </head>
 
 <body>
-    <main>
+    <main data-token="<?= Utils::h($_SESSION['token']) ?>">
         <header>
             <h1>Todos</h1>
-            <span
-                data-token="<?= Utils::h($_SESSION['token']) ?>"
-                class="purge">
-                Purge
-            </span>
+            <span class="purge">Purge</span>
         </header>
 
         <form action="?action=add" method="post">
@@ -43,13 +39,11 @@ $todos = $todo->getAll();
                 <input
                     type="checkbox"
                     data-id="<?= Utils::h($todo->id) ?>"
-                    data-token="<?= Utils::h($_SESSION['token']) ?>"
                     <?= $todo->is_done ? 'checked' : '' ?>>
                 <span><?= Utils::h($todo->title) ?></span>
 
                 <span
                     data-id="<?= Utils::h($todo->id) ?>"
-                    data-token="<?= Utils::h($_SESSION['token']) ?>"
                     class="delete">
                     x
                 </span>

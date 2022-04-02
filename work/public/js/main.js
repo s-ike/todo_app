@@ -1,6 +1,8 @@
 'use strict';
 
 {
+  const token = document.querySelector('main').dataset.token;
+
   const checkboxes = document.querySelectorAll('input[type="checkbox"]');
   checkboxes.forEach(checkbox => {
     checkbox.addEventListener('change', () => {
@@ -8,7 +10,7 @@
         method: 'POST',
         body: new URLSearchParams({
           id: checkbox.dataset.id,
-          token: checkbox.dataset.token,
+          token: token,
         }),
       });
       // CSSで対応
@@ -27,7 +29,7 @@
         method: 'POST',
         body: new URLSearchParams({
           id: span.dataset.id,
-          token: span.dataset.token,
+          token: token,
         }),
       });
 
@@ -44,7 +46,7 @@
     fetch('?action=purge', {
       method: 'POST',
       body: new URLSearchParams({
-        token: purge.dataset.token,
+        token: token,
       }),
     });
 
