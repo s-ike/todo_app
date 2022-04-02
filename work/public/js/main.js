@@ -22,7 +22,16 @@
       if (!confirm('Are you sure?')) {
         return;
       }
-      span.parentNode.submit();
+
+      fetch('?action=delete', {
+        method: 'POST',
+        body: new URLSearchParams({
+          id: span.dataset.id,
+          token: span.dataset.token,
+        }),
+      });
+
+      span.parentNode.remove();
     });
   });
 
